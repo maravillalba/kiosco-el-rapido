@@ -12,7 +12,7 @@
 3. Hacer cambios y commitear.
 4. `git push -u origin tipo/descripcion`
 5. Abrir un PR hacia `develop` (usar la plantilla) y pedir revisión.
-6. Se mergea solo con 1 aprobación de otra persona. Nadie aprueba su propio PR.
+6. El PR es obligatorio. La aprobación es opcional: se pide cuando el cambio afecta a otra persona (contrato, esquemas, estructura). Si nadie contesta, el autor puede mergear y deja un comentario avisando
 7. El autor mergea con **Squash and merge**, usando como título un commit en formato Conventional Commits, y borra la rama.
 
 ## Conventional Commits
