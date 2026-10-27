@@ -4,42 +4,42 @@ export type Category =
   | 'lacteos'
   | 'almacen'
   | 'limpieza'
-  | 'cigarrillos'
+  | 'cigarrillos';
 
 export interface Product {
-  id: number
-  name: string
-  category: Category
-  price: number
-  stock: number
-  description?: string | null
-  image?: string | null
+  id: number;
+  name: string;
+  category: Category;
+  price: number;
+  stock: number;
+  description?: string | null;
+  image?: string | null;
 }
 
 // Solo existe en el frontend
 export interface CartItem {
-  product: Product
-  quantity: number
+  product: Product;
+  quantity: number;
 }
 
 export interface OrderItemInput {
-  product_id: number
-  quantity: number
+  product_id: number;
+  quantity: number;
 }
 
 export interface OrderCreate {
-  items: OrderItemInput[]
+  items: OrderItemInput[];
 }
 
 export interface OrderItemResponse {
-  product_id: number
-  quantity: number
-  unit_price: number
+  product_id: number;
+  quantity: number;
+  unit_price: number;
 }
 
 export interface OrderResponse {
-  id: number
-  created_at: string
-  total: number
-  items: OrderItemResponse[]
+  id: number;
+  created_at: string;
+  total: number;
+  items: OrderItemResponse[];
 }
