@@ -1,7 +1,9 @@
+import './Footer.css';
+
 export default function Footer() {
   return (
-    <footer>
-      <p>Kiosko El Rápido – 2026</p>
+    <footer className="footer">
+      <p className="footer__text container">Kiosko El Rápido – 2026</p>
     </footer>
   );
 }

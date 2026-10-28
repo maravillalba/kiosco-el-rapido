@@ -1,75 +1,120 @@
-# React + TypeScript + Vite
+# Kiosko El Rápido – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de la tienda online **Kiosko El Rápido**. Permite ver el catálogo de productos, filtrarlos por categoría, ver el detalle de cada uno, armar un carrito y finalizar el pedido.
 
-Currently, two official plugins are available:
+Está hecho con React 19, TypeScript, Vite, React Router y Context API (para el carrito). Por ahora los productos salen de datos mock y el pedido es simulado: la conexión con el backend (FastAPI) llega en la Parte 2.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+El contrato de datos entre frontend y backend está en [`docs/CONTRATO.md`](../docs/CONTRATO.md).
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Node.js** `^20.19.0` o `>=22.12.0` (lo que exige Vite 8).
+- **npm** `11.12.1` (la versión que usa el equipo).
 
-## Expanding the ESLint configuration
+## Instalación
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Desde la carpeta `frontend/`:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+`npm ci` instala exactamente lo que dice `package-lock.json`. No uses `npm install`, salvo que se esté agregando una dependencia a propósito.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Comando              | Qué hace                                                                 |
+| -------------------- | ------------------------------------------------------------------------ |
+| `npm run dev`        | Levanta el servidor de desarrollo de Vite con recarga en caliente.       |
+| `npm run build`      | Chequea los tipos (`tsc -b`) y genera el build de producción en `dist/`. |
+| `npm run lint`       | Corre ESLint sobre todo el proyecto.                                     |
+| `npm test`           | Corre los tests una vez con Vitest (`vitest run`).                       |
+| `npm run test:watch` | Corre Vitest en modo watch: vuelve a correr los tests al guardar.        |
+| `npm run preview`    | Sirve localmente el build de `dist/` (hay que correr `build` antes).     |
 
+## Estructura de `src/`
+
+```text
+src/
+├── components/   Componentes reutilizables y su CSS: Header, Footer, Layout,
+│                 ProductCard y CartItem.
+├── context/      CartContext.tsx: estado global del carrito y el hook useCart().
+├── data/         products.ts: productos mock (se reemplaza por la API en la Parte 2).
+├── pages/        Una página por ruta, con su CSS: Home, Products, ProductDetail,
+│                 Cart y NotFound.
+├── types/        index.ts: tipos del contrato (Product, Category, CartItem, pedidos).
+├── utils/        format.ts: formatPrice() y CATEGORY_LABELS (nombres de categorías).
+├── App.tsx       Definición de rutas.
+├── main.tsx      Punto de entrada: BrowserRouter + CartProvider + App.
+├── index.css     Variables CSS (:root) y estilos globales.
+├── setupTests.ts Configuración de los tests (jest-dom y limpieza entre tests).
+└── smoke.test.tsx Tests básicos de la app.
 ```
+
+Cada componente o página que tiene estilos los lleva en su propio `.css`, al lado del `.tsx` (por ejemplo, `ProductCard.tsx` y `ProductCard.css`).
+
+## Rutas
+
+Todas las rutas se renderizan dentro de `Layout` (Header + contenido + Footer).
+
+| Ruta                     | Página          | Descripción                                                         |
+| ------------------------ | --------------- | ------------------------------------------------------------------- |
+| `/`                      | `Home`          | Bienvenida, acceso al catálogo y enlaces a cada categoría.          |
+| `/products`              | `Products`      | Catálogo completo de productos.                                     |
+| `/products?category=...` | `Products`      | Catálogo filtrado por categoría (por ejemplo, `?category=bebidas`). |
+| `/products/:id`          | `ProductDetail` | Detalle de un producto y selector de cantidad.                      |
+| `/cart`                  | `Cart`          | Carrito: cantidades, totales y finalizar pedido (simulado).         |
+| `*`                      | `NotFound`      | Página 404 para cualquier otra ruta.                                |
+
+Valores válidos de `category`: `bebidas`, `golosinas_snacks`, `lacteos`, `almacen`, `limpieza`, `cigarrillos`.
+
+## Variables de entorno
+
+| Variable       | Ejemplo                 | Uso                                         |
+| -------------- | ----------------------- | ------------------------------------------- |
+| `VITE_API_URL` | `http://localhost:8000` | URL base del backend. Se usa en la Parte 2. |
+
+Hoy **ningún archivo de `src/` la lee**: los productos salen de `src/data/products.ts` y "Finalizar pedido" no llama a ninguna API.
+
+Para dejarla configurada, copiá `.env.example` como `.env` dentro de `frontend/`. El archivo `.env` está en el `.gitignore` y no se sube al repositorio.
+
+## Tests
+
+Se usa **Vitest** con **jsdom** y **Testing Library**. La configuración está en `vitest.config.ts` y `src/setupTests.ts`.
+
+```bash
+npm test             # una sola corrida
+npm run test:watch   # modo watch
+```
+
+A tener en cuenta al escribir tests:
+
+- **Envolver en `MemoryRouter` y `CartProvider`.** `App` usa rutas y el Header usa `useCart()`, así que sin el router o sin el provider el render falla. `MemoryRouter` permite elegir la ruta inicial con `initialEntries`:
+
+  ```tsx
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </MemoryRouter>,
+  );
+  ```
+
+- **Buscar "Kiosko El Rápido" por rol y nombre.** El texto aparece en el Header (como link) y en el Footer, y en la Home también como título. Por eso `getByText('Kiosko El Rápido')` encuentra varios elementos y falla. Usá `getByRole('link', { name: 'Kiosko El Rápido' })`, que solo encuentra el link del Header. No agregues otro link con ese mismo nombre, porque rompe el smoke test.
+
+## Convenciones del equipo
+
+- **Formato:** Prettier (`.prettierrc`: comillas simples, punto y coma, `trailingComma: all`, ancho 80). Formateá **solo los archivos que tocaste**, desde `frontend/`:
+
+  ```bash
+  npx prettier --write src/pages/Cart.tsx src/pages/Cart.css
+  ```
+
+  **Nunca** corras `npm run format`: reformatea todo `src/` y llena el PR de cambios que no son tuyos.
+
+- **Antes de subir cambios:** `npm run lint`, `npm run build` y `npm test` tienen que pasar.
+- **Tipos:** `src/types/index.ts` sigue a `docs/CONTRATO.md`. Si hay que cambiar un campo, primero se cambia el contrato (ver la sección "Regla de cambios" de ese documento).
+- **Precios y categorías:** usá `formatPrice()` y `CATEGORY_LABELS` de `src/utils/format.ts`, no los escribas a mano.
+- **Estilos:** cada componente o página en su propio `.css`, usando las variables de `src/index.css`.
+- **Dependencias:** no agregar dependencias nuevas sin acordarlo con el equipo.
