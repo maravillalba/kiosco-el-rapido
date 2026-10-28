@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import type { Category } from '../types';
 import { CATEGORY_LABELS } from '../utils/format';
 import './Home.css';
@@ -9,6 +10,7 @@ function Home() {
   return (
     <div className="home">
       <section className="home__hero">
+        <img src={logo} alt="" className="home__logo" />
         <h1>Kiosko El Rápido</h1>
         <p className="home__tagline">
           Bebidas, golosinas, almacén y más, a un par de clics. ¡Bienvenido!

@@ -31,7 +31,11 @@ function ProductDetail() {
 
   return (
     <section className="product-detail">
-      <button type="button" onClick={() => navigate('/products')}>
+      <button
+        type="button"
+        className="product-detail__back"
+        onClick={() => navigate('/products')}
+      >
         Volver
       </button>
       <span className="product-detail__category">
@@ -53,6 +57,7 @@ function ProductDetail() {
       </label>
       <button
         type="button"
+        className="product-detail__add"
         onClick={() => addToCart(product, quantity)}
         disabled={product.stock === 0}
       >
