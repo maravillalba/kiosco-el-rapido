@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import { useCart } from '../context/CartContext';
 import { products } from '../data/products';
 import type { Category } from '../types';
 import { CATEGORY_LABELS } from '../utils/format';
@@ -9,6 +10,7 @@ const CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[];
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { addToCart } = useCart();
   const categoryParam = searchParams.get('category');
   const selected = CATEGORIES.find((c) => c === categoryParam) ?? null;
 
@@ -53,7 +55,7 @@ function Products() {
       ) : (
         <div className="products__grid">
           {visibleProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} onAdd={addToCart} />
           ))}
         </div>
       )}

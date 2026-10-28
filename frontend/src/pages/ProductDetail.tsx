@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import { products } from '../data/products';
 import { CATEGORY_LABELS, formatPrice } from '../utils/format';
 import './ProductDetail.css';
@@ -7,6 +8,7 @@ import './ProductDetail.css';
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const product = products.find((p) => p.id === Number(id));
@@ -49,6 +51,13 @@ function ProductDetail() {
           onChange={(e) => handleQuantityChange(e.target.value)}
         />
       </label>
+      <button
+        type="button"
+        onClick={() => addToCart(product, quantity)}
+        disabled={product.stock === 0}
+      >
+        Agregar al carrito
+      </button>
     </section>
   );
 }
