@@ -17,7 +17,7 @@ class ProductOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    name: str
+    name: str = Field(min_length=1)
     category: Category
     price: float = Field(gt=0)
     stock: int = Field(ge=0)
