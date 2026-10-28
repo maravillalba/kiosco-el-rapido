@@ -1,0 +1,106 @@
+:root {
+  /* Colores */
+  --color-primario: #e63946;
+  --color-primario-oscuro: #c1121f;
+  --color-secundario: #1d3557;
+  --color-fondo: #f8f9fa;
+  --color-superficie: #fff;
+  --color-borde: #dee2e6;
+  --color-texto: #212529;
+  --color-texto-suave: #6c757d;
+  --color-foco: #457b9d;
+
+  /* Tipografía */
+  --fuente-base: system-ui, sans-serif;
+  --texto-base: 1rem;
+  --texto-chico: 0.875rem;
+  --interlineado: 1.5;
+
+  /* Espaciados */
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 1rem;
+  --espacio-4: 1.5rem;
+  --espacio-5: 2rem;
+
+  /* Radios */
+  --radio: 8px;
+  --radio-grande: 12px;
+
+  /* Sombras */
+  --sombra-chica: 0 1px 3px rgb(0 0 0 / 0.1);
+  --sombra-media: 0 4px 12px rgb(0 0 0 / 0.12);
+
+  /* Layout */
+  --ancho-maximo: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente-base);
+  font-size: var(--texto-base);
+  line-height: var(--interlineado);
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--color-secundario);
+}
+
+a:hover {
+  color: var(--color-primario);
+}
+
+button {
+  font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--ancho-maximo);
+  margin-inline: auto;
+  padding-inline: var(--espacio-3);
+}
+
+main.container {
+  flex: 1;
+  padding-block: var(--espacio-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--espacio-4);
+  }
+}
