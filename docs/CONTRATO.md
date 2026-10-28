@@ -72,11 +72,11 @@ El backend no los conoce:
 | Método | Ruta | Descripción | Respuestas |
 |---|---|---|---|
 | GET | `/health` | Estado del servidor | 200 |
-| GET | `/api/products` | Lista todos los productos | 200 |
+| GET |  `/api/products `|  Lista los productos; con?category=<valor> filtra por categoría (valor inválido: 422) | 200, 422 |
 | GET | `/api/products/{id}` | Un producto | 200, 404 |
 | POST | `/api/orders` | Crea un pedido y descuenta stock | 201, 404, 409, 422 |
 
-El filtrado por categoría y la búsqueda se hacen en el frontend con query params de la URL.
+La búsqueda se hace en el frontend. El filtro por categoría puede hacerse en el frontend o con el parámetro opcional ?category=.
 
 ## 8. Ejemplos JSON
 
