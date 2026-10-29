@@ -75,6 +75,14 @@ El backend no los conoce:
 | GET |  `/api/products `|  Lista los productos; con?category=<valor> filtra por categoría (valor inválido: 422) | 200, 422 |
 | GET | `/api/products/{id}` | Un producto | 200, 404 |
 | POST | `/api/orders` | Crea un pedido y descuenta stock | 201, 404, 409, 422 |
+| GET | `/api/orders` | Lista los pedidos, del más reciente al más antiguo (`id` descendente); si no hay pedidos devuelve `[]` | 200 |
+
+Notas de `POST /api/orders`:
+
+- Si un `product_id` se repite en `items`, el stock se descuenta de forma acumulada y se guarda un renglón por cada item.
+- Si hay varios errores, se responde el del primer item que falle, según el orden en que llegaron.
+
+`GET /api/orders` devuelve una lista de pedidos con el mismo formato que la respuesta de `POST /api/orders` (`id`, `created_at`, `total`, `items[]` con `product_id`, `quantity`, `unit_price`).
 
 La búsqueda se hace en el frontend. El filtro por categoría puede hacerse en el frontend o con el parámetro opcional ?category=.
 
@@ -125,6 +133,29 @@ La búsqueda se hace en el frontend. El filtro por categoría puede hacerse en e
     }
   ]
 }
+```
+
+**GET /api/orders – 200 OK** (del más reciente al más antiguo; `[]` si no hay pedidos)
+```json
+[
+  {
+    "id": 7,
+    "created_at": "2026-11-02T15:30:00",
+    "total": 3500.0,
+    "items": [
+      { "product_id": 1, "quantity": 2, "unit_price": 1200.0 },
+      { "product_id": 4, "quantity": 1, "unit_price": 1100.0 }
+    ]
+  },
+  {
+    "id": 6,
+    "created_at": "2026-11-02T12:10:00",
+    "total": 2400.0,
+    "items": [
+      { "product_id": 2, "quantity": 3, "unit_price": 800.0 }
+    ]
+  }
+]
 ```
 
 ## 9. Base de datos
