@@ -41,6 +41,11 @@
   color: var(--color-texto-suave);
 }
 
+.product-card__stock--out {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
 .product-card button {
   padding: var(--espacio-2) var(--espacio-3);
   font-weight: 700;
