@@ -20,15 +20,15 @@
 .error-message__retry {
   min-height: 44px;
   padding: var(--espacio-2) var(--espacio-4);
-  color: var(--color-superficie);
-  background: var(--color-primario-oscuro);
+  color: var(--color-marca-oscuro);
+  background: var(--color-primario);
   border: none;
   border-radius: var(--radio);
   cursor: pointer;
 }
 
 .error-message__retry:hover {
-  background: var(--color-secundario);
+  background: var(--color-primario-hover);
 }
 
 @media (min-width: 768px) {
