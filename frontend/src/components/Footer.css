@@ -1,6 +1,6 @@
 .footer {
-  color: #fff;
-  background: var(--color-secundario);
+  color: var(--color-fondo);
+  background: var(--color-marca);
 }
 
 .footer__text {

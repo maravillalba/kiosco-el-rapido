@@ -4,8 +4,8 @@
   align-items: center;
   gap: var(--espacio-3);
   padding: var(--espacio-3);
-  background: #fff;
-  border: 1px solid #dee2e6;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
   border-radius: var(--radio);
 }
 
@@ -21,6 +21,7 @@
 .cart-item__unit-price {
   margin: var(--espacio-1) 0 0;
   font-size: 0.85rem;
+  color: var(--color-texto-suave);
 }
 
 .cart-item__quantity {
@@ -37,9 +38,9 @@
 .cart-item__quantity button {
   width: 2rem;
   height: 2rem;
-  color: var(--color-secundario);
-  background: #fff;
-  border: 1px solid var(--color-secundario);
+  color: var(--color-marca);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-marca);
   border-radius: var(--radio);
   cursor: pointer;
 }
@@ -53,15 +54,15 @@
   min-width: 6rem;
   margin: 0;
   font-weight: 700;
-  color: var(--color-primario);
+  color: var(--color-marca);
   text-align: right;
 }
 
 .cart-item__remove {
   padding: var(--espacio-2) var(--espacio-3);
-  color: var(--color-primario);
-  background: #fff;
-  border: 1px solid var(--color-primario);
+  color: var(--color-marca);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-marca);
   border-radius: var(--radio);
   cursor: pointer;
 }

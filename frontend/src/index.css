@@ -1,14 +1,19 @@
 :root {
-  /* Colores */
-  --color-primario: #e63946;
-  --color-primario-oscuro: #c1121f;
-  --color-secundario: #1d3557;
-  --color-fondo: #f8f9fa;
+  /* Colores de marca */
+  --color-primario: #ff8a00; /* naranja: solo fondo de botones principales */
+  --color-primario-hover: #ffa033;
+  --color-acento: #ffd700; /* amarillo: solo fondos */
+  --color-marca: #247a16; /* verde: texto, bordes y fondos */
+  --color-marca-oscuro: #143d0c; /* texto sobre naranja o amarillo */
+  --color-marca-suave: #e9f3e6;
+
+  /* Colores de interfaz */
+  --color-fondo: #faf9f2; /* crema */
   --color-superficie: #fff;
-  --color-borde: #dee2e6;
-  --color-texto: #212529;
-  --color-texto-suave: #6c757d;
-  --color-foco: #457b9d;
+  --color-borde: #d9dccf;
+  --color-texto: #1f2a1c;
+  --color-texto-suave: #4f5e4a;
+  --color-foco: var(--color-marca);
 
   /* Tipografía */
   --fuente-base: system-ui, sans-serif;
@@ -28,8 +33,8 @@
   --radio-grande: 12px;
 
   /* Sombras */
-  --sombra-chica: 0 1px 3px rgb(0 0 0 / 0.1);
-  --sombra-media: 0 4px 12px rgb(0 0 0 / 0.12);
+  --sombra-chica: 0 1px 3px rgb(20 61 12 / 0.1);
+  --sombra-media: 0 4px 12px rgb(20 61 12 / 0.15);
 
   /* Layout */
   --ancho-maximo: 1100px;
@@ -65,15 +70,16 @@ h1,
 h2,
 h3 {
   line-height: 1.2;
+  color: var(--color-marca-oscuro);
   overflow-wrap: break-word;
 }
 
 a {
-  color: var(--color-secundario);
+  color: var(--color-marca);
 }
 
 a:hover {
-  color: var(--color-primario);
+  color: var(--color-marca-oscuro);
 }
 
 button {
