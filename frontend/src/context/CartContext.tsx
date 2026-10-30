@@ -8,8 +8,10 @@ interface CartContextValue {
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
+  syncStock: (products: Product[]) => void;
   totalItems: number;
   totalPrice: number;
+  
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -57,6 +59,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
 
+  // Reemplaza el producto de cada ítem por el actual del backend: baja la
+  // cantidad al stock real y quita los productos que ya no existen o no tienen stock.
+  const syncStock = (fresh: Product[]) => {
+    setItems((prev) =>
+      prev.flatMap((item) => {
+        const current = fresh.find((p) => p.id === item.product.id);
+        if (!current || current.stock <= 0) {
+          return [];
+        }
+        return [
+          {
+            product: current,
+            quantity: Math.min(item.quantity, current.stock),
+          },
+        ];
+      }),
+    );
+  };
+
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -71,6 +92,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeFromCart,
         updateQuantity,
         clearCart,
+        syncStock,
         totalItems,
         totalPrice,
       }}

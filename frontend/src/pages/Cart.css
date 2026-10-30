@@ -68,3 +68,9 @@
 .cart__confirmation p {
   margin: 0 0 var(--espacio-2);
 }
+
+.cart__notice {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: var(--color-marca-oscuro);
+}

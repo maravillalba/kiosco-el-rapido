@@ -9,6 +9,9 @@ export interface OrderSummary {
   total: number;
 }
 
+// 'outdated': el pedido falló por stock (409) o producto inexistente (404).
+export type SubmitResult = 'success' | 'outdated' | 'error';
+
 // Convierte el error de la API en un texto en español para el usuario.
 function messageFromError(error: unknown, items: CartItem[]): string {
   if (!(error instanceof ApiError)) {
@@ -48,10 +51,10 @@ export function useCheckout() {
   // El ref evita un doble envío aunque el usuario toque dos veces antes de re-renderizar.
   const inFlight = useRef(false);
 
-  // Devuelve true si el pedido se creó. Vaciar el carrito lo decide quien llama.
-  const submit = useCallback(async (items: CartItem[]): Promise<boolean> => {
+    // Vaciar el carrito lo decide quien llama, solo si el resultado es 'success'.
+  const submit = useCallback(async (items: CartItem[]): Promise<SubmitResult> => {
     if (inFlight.current || items.length === 0) {
-      return false;
+      return 'error';
     }
     inFlight.current = true;
     setSubmitting(true);
@@ -70,10 +73,12 @@ export function useCheckout() {
         totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
         total: order.total,
       });
-      return true;
+        return 'success';
     } catch (err) {
       setError(messageFromError(err, items));
-      return false;
+      const outdated =
+        err instanceof ApiError && (err.status === 409 || err.status === 404);
+      return outdated ? 'outdated' : 'error';
     } finally {
       inFlight.current = false;
       setSubmitting(false);
