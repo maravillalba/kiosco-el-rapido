@@ -39,13 +39,24 @@ function ProductNotFound({ id }: { id: string | undefined }) {
 
 function ProductInfo({ product }: { product: Product }) {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { items, addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+
+  // El tope es lo que queda después de lo que ya está en el carrito.
+  const inCart =
+    items.find((item) => item.product.id === product.id)?.quantity ?? 0;
+  const available = Math.max(0, product.stock - inCart);
+  const selected = Math.min(quantity, Math.max(available, 1));
 
   const handleQuantityChange = (value: string) => {
     const parsed = Number(value);
     if (Number.isNaN(parsed)) return;
-    setQuantity(Math.min(Math.max(1, Math.trunc(parsed)), product.stock));
+    setQuantity(Math.min(Math.max(1, Math.trunc(parsed)), available));
+  };
+
+  const handleAdd = () => {
+    addToCart(product, selected);
+    setQuantity(1);
   };
 
   return (
@@ -63,22 +74,32 @@ function ProductInfo({ product }: { product: Product }) {
       <h1>{product.name}</h1>
       {product.description && <p>{product.description}</p>}
       <p className="product-detail__price">{formatPrice(product.price)}</p>
-      <p>Stock disponible: {product.stock}</p>
-      <label className="product-detail__quantity">
-        Cantidad
-        <input
-          type="number"
-          min={1}
-          max={product.stock}
-          value={quantity}
-          onChange={(e) => handleQuantityChange(e.target.value)}
-        />
-      </label>
+      {product.stock === 0 ? (
+        <p className="product-detail__out">Sin stock</p>
+      ) : (
+        <p>Stock disponible: {product.stock}</p>
+      )}
+      {inCart > 0 && <p>Ya tenés {inCart} en el carrito.</p>}
+      {product.stock > 0 && available === 0 && (
+        <p>Ya agregaste todo el stock disponible.</p>
+      )}
+      {available > 0 && (
+        <label className="product-detail__quantity">
+          Cantidad
+          <input
+            type="number"
+            min={1}
+            max={available}
+            value={selected}
+            onChange={(e) => handleQuantityChange(e.target.value)}
+          />
+        </label>
+      )}
       <button
         type="button"
         className="product-detail__add"
-        onClick={() => addToCart(product, quantity)}
-        disabled={product.stock === 0}
+        onClick={handleAdd}
+        disabled={available === 0}
       >
         Agregar al carrito
       </button>

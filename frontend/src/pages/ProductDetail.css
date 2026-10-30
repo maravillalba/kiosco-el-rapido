@@ -45,6 +45,11 @@
   color: var(--color-marca);
 }
 
+.product-detail__out {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
 .product-detail__quantity {
   display: flex;
   flex-direction: column;
