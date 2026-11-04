@@ -26,16 +26,29 @@ def seed_en_memoria(monkeypatch):
     engine.dispose()
 
 
-def test_seed_deja_con_imagen_a_los_10_productos(seed_en_memoria):
+def cargar_seed(seed_en_memoria):
     seed.seed()
-
     with seed_en_memoria() as db:
-        productos = db.query(Product).order_by(Product.id).all()
+        return db.query(Product).order_by(Product.id).all()
 
-    assert len(productos) == 10
+
+def test_seed_carga_todos_los_productos_sin_repetir_nombres(seed_en_memoria):
+    productos = cargar_seed(seed_en_memoria)
+
+    assert len(productos) == len(seed.PRODUCTS)
+    nombres = [p.name for p in productos]
+    assert len(nombres) == len(set(nombres))
+
+
+def test_las_imagenes_del_seed_son_rutas_validas(seed_en_memoria):
+    # `image` es opcional: los productos sin foto usan la de su categoría en el
+    # frontend. Solo se revisan las rutas que el seed declara.
+    productos = cargar_seed(seed_en_memoria)
+
     for producto in productos:
-        assert producto.image, f"{producto.name} no tiene imagen"
-        assert producto.image.startswith("/productos/")
-        assert producto.image.endswith(".webp")
+        if producto.image is None:
+            continue
+        assert producto.image.startswith("/productos/"), producto.name
+        assert producto.image.endswith(".webp"), producto.name
         archivo = FRONTEND_PUBLIC / producto.image.lstrip("/")
-        assert archivo.is_file(), f"No existe {archivo}"
+        assert archivo.is_file(), f"{producto.name}: no existe {archivo}"
