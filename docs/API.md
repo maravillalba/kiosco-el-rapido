@@ -67,7 +67,7 @@ GET /api/products
     "price": 1200.0,
     "stock": 25,
     "description": "Gaseosa clásica",
-    "image": null
+    "image": "/productos/coca-cola.webp"
   },
   {
     "id": 2,
@@ -76,7 +76,7 @@ GET /api/products
     "price": 800.0,
     "stock": 40,
     "description": "Agua sin gas",
-    "image": null
+    "image": "/productos/agua-mineral.webp"
   }
 ]
 ```
@@ -96,6 +96,8 @@ Productos que carga el seed con una base nueva:
 | 9 | Lavandina 1L | `limpieza` | 1600.0 | 15 |
 | 10 | Cigarrillos | `cigarrillos` | 2500.0 | 20 |
 
+Cada producto del seed trae en `image` la ruta de su foto, por ejemplo `/productos/coca-cola.webp`. Es una ruta del frontend, no del backend: los archivos están en `frontend/public/productos/` y los sirve Vite. Si `image` es `null` o la foto no carga, el frontend muestra la imagen de la categoría.
+
 **Pedido con filtro**
 
 ```
@@ -113,7 +115,7 @@ GET /api/products?category=bebidas
     "price": 1200.0,
     "stock": 25,
     "description": "Gaseosa clásica",
-    "image": null
+    "image": "/productos/coca-cola.webp"
   },
   {
     "id": 2,
@@ -122,7 +124,7 @@ GET /api/products?category=bebidas
     "price": 800.0,
     "stock": 40,
     "description": "Agua sin gas",
-    "image": null
+    "image": "/productos/agua-mineral.webp"
   }
 ]
 ```
@@ -169,7 +171,7 @@ GET /api/products/1
   "price": 1200.0,
   "stock": 25,
   "description": "Gaseosa clásica",
-  "image": null
+  "image": "/productos/coca-cola.webp"
 }
 ```
 
